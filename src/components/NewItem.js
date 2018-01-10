@@ -7,7 +7,7 @@ class NewItem extends Component {
   state = { value: '' };
 
   handleChange = event => {
-    // Do something when the state of this input changes.
+    this.setState({ value: event.target.value });
   };
 
   handleSubmit = event => {
@@ -16,9 +16,9 @@ class NewItem extends Component {
 
     event.preventDefault();
 
-    // Do something when a new value is submitted.
+    onSubmit({ value, id: uniqueId(), packed: false });
 
-    // Reset the state of the component.
+    this.setState({ value: '' });
   };
 
   render() {
@@ -26,12 +26,7 @@ class NewItem extends Component {
 
     return (
       <form className="NewItem" onSubmit={this.handleSubmit}>
-        <input
-          className="NewItem-input"
-          type="text"
-          value={value}
-          onChange={this.handleChange}
-        />
+        <input className="NewItem-input" type="text" value={value} onChange={this.handleChange} />
         <input className="NewItem-submit button" type="submit" />
       </form>
     );
