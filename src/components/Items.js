@@ -13,7 +13,7 @@ class Items extends Component {
 
   render() {
     const { searchTerm } = this.state;
-    const { title, items } = this.props;
+    const { title, items, onChange, onRemove } = this.props;
     return (
       <section className="Items">
         <h2>
@@ -23,7 +23,7 @@ class Items extends Component {
         {items
           .filter(item => item.value.toLowerCase().includes(searchTerm.toLowerCase()))
           .map(item => (
-            <Item key={item.id} onCheckOff={this.props.handleChange} onRemove={this.props.handleRemove} item={item} />
+            <Item key={item.id} onCheckOff={() => onChange(item)} onRemove={() => onRemove(item)} item={item} />
           ))}
       </section>
     );
