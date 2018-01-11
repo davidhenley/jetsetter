@@ -25,13 +25,28 @@ class Application extends Component {
     items: defaultState
   };
 
-  handleAdd = item => {
-    this.setState(state => ({ items: [...state.items, item] }));
+  handleAdd = itemToAdd => {
+    this.setState(state => ({ items: [itemToAdd, ...state.items] }));
   };
 
-  handleRemove = item => {};
+  handleRemove = itemToRemove => {
+    this.setState(state => ({ items: state.items.filter(item => item.id !== itemToRemove.id) }));
+  };
 
-  handleCheck = item => {};
+  handleChange = itemToChange => {
+    this.setState(state => ({
+      items: state.items.map(item => {
+        if (item.id !== itemToChange.id) return item;
+        return { ...item, packed: !item.packed };
+      })
+    }));
+  };
+
+  handleAllUnpacked = () => {
+    this.setState(state => ({
+      items: state.items.map(item => ({ ...item, packed: false }))
+    }));
+  };
 
   render() {
     const { items } = this.state;
@@ -40,9 +55,21 @@ class Application extends Component {
       <div className="Application">
         <NewItem onSubmit={this.handleAdd} />
         <CountDown />
-        <Items title="Unpacked Items" items={items.filter(item => !item.packed)} />
-        <Items title="Packed Items" items={items.filter(item => item.packed)} />
-        <button className="button full-width">Mark All As Unpacked</button>
+        <Items
+          handleChange={this.handleChange}
+          handleRemove={this.handleRemove}
+          title="Unpacked Items"
+          items={items.filter(item => !item.packed)}
+        />
+        <Items
+          handleChange={this.handleChange}
+          handleRemove={this.handleRemove}
+          title="Packed Items"
+          items={items.filter(item => item.packed)}
+        />
+        <button className="button full-width" onClick={this.handleAllUnpacked}>
+          Mark All As Unpacked
+        </button>
       </div>
     );
   }
